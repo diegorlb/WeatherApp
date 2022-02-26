@@ -8,11 +8,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#15171d',
-        secondary: '#252833',
+        primary: '#476D85',
+        secondary: '#7190AD',
       },
       fontFamily: {
         open: ['"Open Sans"', ...defaultTheme.fontFamily.sans]
+      },
+      fontSize: {
+        xxs: ['0.65rem', '0.75rem']
       }
     },
   },
