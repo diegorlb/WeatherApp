@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#476D85',
-        secondary: '#7190AD',
+        primary: '#546987',
+        secondary: '#0A5071',
       },
       fontFamily: {
         open: ['"Open Sans"', ...defaultTheme.fontFamily.sans]
@@ -19,5 +19,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
 }

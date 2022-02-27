@@ -15,6 +15,14 @@ const WeatherGraph: FunctionComponent<WeatherGraphProps> = ({ hourly, }) => {
   const [points, setPoints] = useState<Array<{ x: number, y: number }>>([])
   const [dimensions, setDimensions] = useState<Array<number>>([0, 0])
 
+  const recalculatePath = useCallback((svg: SVGSVGElement) => {
+    if (!svg) return
+    const { width, height, } = svg.getBoundingClientRect()
+    setPath(generatePaths(temps.map(({ temp, }) => temp,), width, height))
+    setPoints(generatePoints(temps.map(({ temp, }) => temp,), width, height))
+    setDimensions([width, height])
+  }, [temps])
+
   useEffect(() => {
     setTemps(hourly.slice(0, 12).map(({ time, temp, }) => {
       const date = new Date(time)
@@ -28,14 +36,6 @@ const WeatherGraph: FunctionComponent<WeatherGraphProps> = ({ hourly, }) => {
     recalculatePath(svg.current)
   }, [hourly])
 
-  const recalculatePath = useCallback((svg: SVGSVGElement) => {
-    if (!svg) return
-    const { width, height, } = svg.getBoundingClientRect()
-    setPath(generatePaths(temps.map(({ temp, }) => temp,), width, height))
-    setPoints(generatePoints(temps.map(({ temp, }) => temp,), width, height))
-    setDimensions([width, height])
-  }, [temps])
-
   useEffect(() => {
     const observer = new ResizeObserver(([entry]) => {
       if (!entry) return
@@ -47,15 +47,15 @@ const WeatherGraph: FunctionComponent<WeatherGraphProps> = ({ hourly, }) => {
   }, [svg.current, ref.current, temps])
 
   return (
-    <div ref={ref} className={'w-full h-44 bg-secondary rounded-lg overflow-hidden border border-secondary'}>
+    <div ref={ref} className={'w-full h-44 flex-shrink-0 bg-secondary overflow-hidden border border-secondary'}>
       <svg ref={svg} width={'100%'} height={'100%'}>
         <defs>
           <linearGradient id={'pathGradient'} x1={'100%'} y1={'100%'} x2={'100%'} y2={'0%'}>
-            <stop offset={'0%'} stopColor={'rgba(191,219,254,100)'} />
-            <stop offset={'100%'} stopColor={'rgba(254,202,202,100)'} />
+            <stop offset={'0%'} stopColor={'rgb(191,219,254)'} />
+            <stop offset={'100%'} stopColor={'rgb(254,202,202)'} />
           </linearGradient>
           <linearGradient id={'fillGradient'} x1={'100%'} y1={'100%'} x2={'100%'} y2={'0%'}>
-            <stop offset={'0%'} stopColor={'rgba(71,109,133,30)'} />
+            <stop offset={'0%'} stopColor={'rgba(10,80,113,30)'} />
             <stop offset={'100%'} stopColor={'rgba(113,144,173,80)'} />
           </linearGradient>
         </defs>
@@ -64,7 +64,7 @@ const WeatherGraph: FunctionComponent<WeatherGraphProps> = ({ hourly, }) => {
           <g key={index}>
             <line
               x1={x}
-              y1={y}
+              y1={y + 2}
               x2={x}
               y2={dimensions[1] - 30 + (index % 2) * 10}
               stroke={'#ffffff55'}
@@ -72,7 +72,7 @@ const WeatherGraph: FunctionComponent<WeatherGraphProps> = ({ hourly, }) => {
             <circle
               cx={x}
               cy={y}
-              r={2}
+              r={1}
               fill={'#252525'} />
             <text
               x={x}

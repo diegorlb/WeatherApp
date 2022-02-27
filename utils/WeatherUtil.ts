@@ -99,7 +99,7 @@ const getWeatherData = async (coordinates: Coordinates, lang: string, units: Uni
     exclude: 'current,minutely',
     appId: process.env.NEXT_PUBLIC_OPENWEATHER,
   })).then((data) => data.json()) as APIOneCallResponse
-  console.log(response)
+  
   if (response && response['hourly'] && response['daily']) {
     const hourly = response['hourly'].map(({ dt, temp, feels_like, pressure, humidity, clouds, visibility, wind_speed, wind_deg, weather, pop, }) => ({
       time: dt * 1000,
